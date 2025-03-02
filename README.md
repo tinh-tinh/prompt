@@ -1,8 +1,8 @@
 # Tinh Tinh Prompt 
 
 <div>
-<img alt="GitHub Release" src="https://img.shields.io/github/v/release/tinh-tinh/fetch">
-<img alt="GitHub License" src="https://img.shields.io/github/license/tinh-tinh/fetch">
+<img alt="GitHub Release" src="https://img.shields.io/github/v/release/tinh-tinh/prompt">
+<img alt="GitHub License" src="https://img.shields.io/github/license/tinh-tinh/prompt">
 
 </div>
 
