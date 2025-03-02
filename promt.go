@@ -11,13 +11,7 @@ const PROMPT core.Provide = "PROMPT"
 func promptHandler(module core.Module) core.Controller {
 	ctrl := module.NewController("/metrics")
 
-	reg := prometheus.NewRegistry()
-	handler := promhttp.HandlerFor(
-		reg,
-		promhttp.HandlerOpts{},
-	)
-
-	ctrl.Handler("", handler)
+	ctrl.Handler("", promhttp.Handler())
 
 	return ctrl
 }

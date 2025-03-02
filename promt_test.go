@@ -1,6 +1,7 @@
 package prompt_test
 
 import (
+	"io"
 	"net/http/httptest"
 	"testing"
 
@@ -33,4 +34,8 @@ func Test_Promp(t *testing.T) {
 	res, err = testClient.Get(testServer.URL + "/api/metrics")
 	require.Nil(t, err)
 	require.Equal(t, 200, res.StatusCode)
+
+	data, err := io.ReadAll(res.Body)
+	require.Nil(t, err)
+	require.NotEmpty(t, string(data))
 }
