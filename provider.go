@@ -11,8 +11,15 @@ func MakeCounterProvider(opt prometheus.CounterOpts, labelNames []string) core.P
 
 	return func(module core.Module) core.Provider {
 		prd := module.NewProvider(core.ProviderOptions{
-			Name:  core.Provide(opt.Name),
-			Value: counter,
+			Name: core.Provide(opt.Name),
+			Factory: func(param ...interface{}) interface{} {
+				pro, ok := param[0].(*PromptConfig)
+				if ok && pro != nil {
+					pro.Metrics = append(pro.Metrics, counter)
+				}
+				return counter
+			},
+			Inject: []core.Provide{PROMPT},
 		})
 
 		return prd
@@ -33,8 +40,15 @@ func MakeGaugeProvider(opt prometheus.GaugeOpts, labelNames []string) core.Provi
 
 	return func(module core.Module) core.Provider {
 		prd := module.NewProvider(core.ProviderOptions{
-			Name:  core.Provide(opt.Name),
-			Value: gauge,
+			Name: core.Provide(opt.Name),
+			Factory: func(param ...interface{}) interface{} {
+				pro, ok := param[0].(*PromptConfig)
+				if ok && pro != nil {
+					pro.Metrics = append(pro.Metrics, gauge)
+				}
+				return gauge
+			},
+			Inject: []core.Provide{PROMPT},
 		})
 
 		return prd
@@ -55,8 +69,15 @@ func MakeHistogramProvider(opt prometheus.HistogramOpts, labelNames []string) co
 
 	return func(module core.Module) core.Provider {
 		prd := module.NewProvider(core.ProviderOptions{
-			Name:  core.Provide(opt.Name),
-			Value: histogram,
+			Name: core.Provide(opt.Name),
+			Factory: func(param ...interface{}) interface{} {
+				pro, ok := param[0].(*PromptConfig)
+				if ok && pro != nil {
+					pro.Metrics = append(pro.Metrics, histogram)
+				}
+				return histogram
+			},
+			Inject: []core.Provide{PROMPT},
 		})
 
 		return prd
@@ -77,8 +98,15 @@ func MakeSummaryProvider(opt prometheus.SummaryOpts, labelNames []string) core.P
 
 	return func(module core.Module) core.Provider {
 		prd := module.NewProvider(core.ProviderOptions{
-			Name:  core.Provide(opt.Name),
-			Value: summary,
+			Name: core.Provide(opt.Name),
+			Factory: func(param ...interface{}) interface{} {
+				pro, ok := param[0].(*PromptConfig)
+				if ok && pro != nil {
+					pro.Metrics = append(pro.Metrics, summary)
+				}
+				return summary
+			},
+			Inject: []core.Provide{PROMPT},
 		})
 
 		return prd
