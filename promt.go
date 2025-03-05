@@ -2,7 +2,7 @@ package prompt
 
 import (
 	"errors"
-	"fmt"
+	"log"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -26,7 +26,10 @@ func promptHandler(module core.Module) core.Controller {
 	if len(pro.Metrics) > 0 {
 		reg := prometheus.NewRegistry()
 		for _, metric := range pro.Metrics {
-			reg.Register(metric.Collector)
+			err := reg.Register(metric.Collector)
+			if err != nil {
+				log.Print(err)
+			}
 		}
 		handler := promhttp.HandlerFor(
 			reg,
@@ -49,6 +52,7 @@ func Register(config *Config) core.Modules {
 			Name:  PROMPT,
 			Value: config,
 		})
+		promptModule.Export(PROMPT)
 
 		if len(config.Metrics) > 0 {
 			for _, metric := range config.Metrics {
@@ -56,11 +60,8 @@ func Register(config *Config) core.Modules {
 					Name:  GetMetricName(metric.Name),
 					Value: metric.Collector,
 				})
+				promptModule.Export(GetMetricName(metric.Name))
 			}
-		}
-
-		for _, v := range promptModule.GetDataProviders() {
-			fmt.Println(v.GetName())
 		}
 
 		promptModule.Controllers(promptHandler)
